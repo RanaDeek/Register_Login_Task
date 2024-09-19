@@ -1,0 +1,74 @@
+﻿@model IEnumerable<User>
+
+@{
+    ViewData["Title"] = "Index";
+    var activeUsers = Model.Where(user => user.Active);
+    var nonActiveUsers = Model.Where(user => !user.Active);
+}
+
+<h1>Index</h1>
+
+<h2>Active Users</h2>
+@if (activeUsers.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Active</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in activeUsers)
+            {
+                <tr>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td class="te">
+                        <a asp-controller="Users" asp-action="ChangeStatus" asp-route-Id="@user.Id" class="text-black">@(user.Active)</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No active users found.</p>
+}
+
+<h2>Non-Active Users</h2>
+@if (nonActiveUsers.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Active</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in nonActiveUsers)
+            {
+                <tr>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td class="te">
+                        <a asp-controller="Users" asp-action="ChangeStatus" asp-route-Id="@user.Id" class="text-danger">@(user.Active)</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No non-active users found.</p>
+}
+
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
